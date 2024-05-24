@@ -1,0 +1,95 @@
+package com.umg.inventario;
+
+import java.util.Scanner;
+
+public class Main {
+
+public static void main(String[] args) {
+	
+	
+	
+	        // Credenciales predefinidas
+	        String validUsername = "fariseos";
+	        String validPassword = "123";
+
+	        // Crear un objeto Scanner para leer la entrada del usuario
+	        Scanner scanner = new Scanner(System.in);
+
+	        // Solicitar nombre de usuario
+	        System.out.print("Ingrese su nombre de usuario: ");
+	        String username = scanner.nextLine();
+
+	        // Solicitar contraseña
+	        System.out.print("Ingrese su contraseña: ");
+	        String password = scanner.nextLine();
+
+	        // Validar credenciales
+	        if (username.equals(validUsername) && password.equals(validPassword)) {
+	            System.out.println("Login exitoso. ¡Bienvenido, " + username + "!");
+	            
+	           
+	            
+	            
+	            int opcion =0;
+	    		do {
+	    			
+	    			try {
+
+	    	            System.out.println("----Menú de inicio----");
+	    	            System.out.println("1. ingresar producto");
+	    	            System.out.println("2. Modificar producto ");
+	    	            System.out.println("3. Ver productos ");
+	    	            System.out.println("4. Eliminar un producto existente");
+	    	            System.out.println("5. Salir");
+	    	            Scanner lector = new Scanner(System.in);
+	    	            opcion = lector.nextInt();
+	    	           
+	    	            
+	    	            
+	    	            switch (opcion) {
+	    				case 1: {
+	    						GestorDeInventario.ingresarProducto();
+	    						break;
+	    				}
+	    				
+	    				case 2:{
+	    					GestorDeInventario.actualizarProducto();
+	    					break;
+	    				}
+	    				case 3:{
+	    					GestorDeInventario.leerProducto();
+	    					break;
+	    				}
+	    				case 4:{
+	    					GestorDeInventario.eliminarProducto();
+	    					break;
+	    				}
+	    				case 5:{
+	    					System.out.println("Usted ha salido de la base de datos");
+	    					break;
+	    				}
+	    				default:
+	    					System.out.println("Ingrese una opcion valida");
+	    					
+	    				}
+	    				
+	    				} catch (Exception e) {
+	    					System.out.println("Ingrese unicamente numeros");
+	    			}
+	    		} while (opcion!=5);
+	    		
+	    	}else {
+	            System.out.println("Usuario o contraseña incorrectos.");
+	        }
+
+	        // Cerrar el scanner
+	        scanner.close();
+	
+	
+	
+	
+		
+		
+}
+
+}
