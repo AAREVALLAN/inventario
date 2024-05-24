@@ -1,0 +1,9 @@
+create database if not exists tienda;
+use tienda; 
+create table if not exists inventario (
+idproducto INT AUTO_INCREMENT PRIMARY KEY,
+descripcion VARCHAR(50) NOT NULL,
+stock int(50),
+precio_compra VARCHAR(50),
+precio_venta VARCHAR(50) NOT NULL
+);
