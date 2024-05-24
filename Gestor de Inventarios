@@ -1,0 +1,232 @@
+package com.umg.inventario;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+import com.umg.connection.MariaDBConnection;
+
+public class GestorDeInventario {
+	
+	 public static boolean ingresarProducto ( ) {
+		 
+		 System.out.println("A continuacion se le solicitaran los datos del producto");
+	    	Scanner sc = new Scanner(System.in);
+			
+			System.out.println("descripcion: ");
+			String descripcion=sc.nextLine();
+			
+			System.out.println("Stock: ");
+			String stock=sc.nextLine();
+			
+			System.out.println("precio_venta: ");
+			String precio_venta=sc.nextLine();
+			
+			System.out.println("precio_compra: ");
+			String precio_compra=sc.nextLine();
+			
+
+	
+	        Connection conn = MariaDBConnection.getConnection();
+
+	        if (conn != null) {
+
+	            try {
+
+	            	String consulta = "INSERT INTO inventario (descripcion,"
+	                		+ " stock, precio_compra, precio_venta ) VALUES (?, ?, ?,?)";
+
+	                PreparedStatement statement = conn.prepareStatement(consulta);
+
+
+	                statement.setString(1, descripcion);
+	                statement.setString(2, stock);
+	                statement.setString(3, precio_compra );
+	                statement.setString(4, precio_venta );
+	               
+	             
+	                
+	                
+	                int filasInsertadas = statement.executeUpdate();
+	                
+	                System.out.println("Registro creado: " + filasInsertadas);
+
+	                statement.close();
+
+	                conn.close();
+
+
+	                return filasInsertadas > 0;
+
+	            } catch (SQLException e) {
+
+	                System.out.println("Error al crear producto: " + e.getMessage());
+
+	                return false;
+
+	            }
+
+	        } else {
+
+	            System.out.println("No se pudo establecer la conexión.");
+
+	            return false;
+
+	        }
+
+	 }
+	 	
+
+
+
+
+
+
+//eliminar producto 
+
+
+public static boolean eliminarProducto() {
+	
+	System.out.println("Por favor ingrese el ID del producto que desea eliminar: ");
+	Scanner sc = new Scanner(System.in);
+	int idproducto = sc.nextInt();
+	
+	
+
+    Connection conn = MariaDBConnection.getConnection();
+
+    if (conn != null) {
+
+        try {
+
+            String consulta = "DELETE FROM inventario WHERE idproducto = ?";
+
+            PreparedStatement statement = conn.prepareStatement(consulta);
+
+            statement.setInt(1, idproducto);
+
+            int filasEliminadas = statement.executeUpdate();
+
+            statement.close();
+
+            conn.close();
+
+            return filasEliminadas > 0;
+
+        } catch (SQLException e) {
+
+            System.out.println("Error al eliminar producto: " + e.getMessage());
+
+            return false;
+
+        }
+
+    } else {
+
+        System.out.println("No se pudo establecer la conexión.");
+
+        return false;
+
+    }
+
+}
+	
+
+	
+	
+	
+	
+	
+	//actualizacion de producto 
+	
+	
+	
+	
+	public static boolean actualizarProducto() {
+		
+		
+		Scanner sc = new Scanner(System.in);
+    	System.out.println("A continuacion se le solicitaran los datos del producto para actualizar");
+    	
+    	System.out.println("Ingrese el ID producto: ");
+    	String idproducto = sc.nextLine();
+    	
+    	System.out.println("descripcion: ");
+		String descripcion=sc.nextLine();
+    			
+		System.out.println("stock: ");
+		String stock=sc.nextLine();
+				
+		System.out.println("Precio_venta: ");
+		String precio_venta=sc.nextLine();
+
+	    Connection conn = MariaDBConnection.getConnection();
+
+	    if (conn != null) {
+
+	        try {
+
+	            String consulta = "UPDATE inventario SET descripcion = ?, stock = ?, precio_venta = ? WHERE idproducto = ?";
+
+	            PreparedStatement statement = conn.prepareStatement(consulta);
+
+	            statement.setString(1, descripcion);
+
+	            statement.setString(2, stock);
+
+	            statement.setString(3, precio_venta);
+
+	            statement.setString(4, idproducto);
+
+	            int filasActualizadas = statement.executeUpdate();
+
+	            statement.close();
+
+	            conn.close();
+
+	            return filasActualizadas > 0;
+
+	        } catch (SQLException e) {
+
+	            System.out.println("Error al actualizar producto: " + e.getMessage());
+
+	            return false;
+
+	        }
+
+	    } else {
+
+	        System.out.println("No se pudo establecer la conexión.");
+
+	        return false;
+
+	    }
+
+	}
+	public static void leerProducto() {
+	    Connection conn = MariaDBConnection.getConnection();
+	    if (conn != null) {
+	        try {
+	            String consulta = "SELECT * FROM inventario";
+	            PreparedStatement statement = conn.prepareStatement(consulta);
+	            ResultSet resultSet = statement.executeQuery();
+	            while (resultSet.next()) {
+	                int idproducto = resultSet.getInt("idproducto");
+	                String descripcion = resultSet.getString("descripcion");
+	                String stock = resultSet.getString("stock");
+	                String precio_venta = resultSet.getString("precio_venta");
+	                System.out.println("ID producto: " + idproducto + ", descripcion: " + descripcion + ", stock: " + stock + ", precio_venta: " + precio_venta);
+	            }
+	            resultSet.close();
+	            statement.close();
+	            conn.close();
+	        } catch (SQLException e) {
+	            System.out.println("Error al leer producto: " + e.getMessage());	
+	        }
+	    } else {
+	        System.out.println("No se pudo establecer la conexión.");
+	    }
+	}
+	}
